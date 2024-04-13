@@ -1,5 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
+import csv
+
+
 
 #change this depending on the vlr stats page that you want it to scrape from
 url = "https://www.vlr.gg/event/stats/1921/champions-tour-2024-masters-madrid?exclude=&min_rounds=0&agent=all"
