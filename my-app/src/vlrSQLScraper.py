@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 import requests
-import csv
 import mysql.connector
 
 #open with google sheets to test
@@ -41,29 +40,37 @@ def clean_data(headers, rows):
         del row[agents_index]
     del headers[agents_index]
 
-def save_to_csv(headers, rows, fileName):
-    with open(fileName, 'w', newline='') as csvFile:
-        writer = csv.writer(csvFile)
-        #write headers and rows
-        #create team header
-        writer.writerow(headers + ['Team'])
-        for row in rows:
-            writer.writerow(row)
-    print(f"Data has been saved to {fileName}")
+def save_to_mysql(headers, rows, host, user, password, database, table):
+    conn = mysql.connector.connect(
+        host=host,
+        user=user,
+        password=password,
+        database=database
+    )
+    cursor = conn.cursor()
 
 def main():
     #change this depending on the vlr stats page that you want it to scrape from
     url = "https://www.vlr.gg/event/stats/1921/champions-tour-2024-masters-madrid?exclude=&min_rounds=0&agent=all"
-    #created CSV file name 
-    fileName = 'vlr_stats.csv'
+    #needed varaibles for mySQL functionality
+    
+    
+    #REPLACE THIS AS NEEDED
+    host = ""
+    user = ""
+    password = ""
+    database = ""
+    table = ""
+
+
     #scraping data
     headers, rows = scrapeStats(url)
     #check data is retrieved successfully
     if headers and rows:
         #clean data
         clean_data(headers, rows)
-        #save data to CSV file
-        save_to_csv(headers, rows, fileName)
+        #save data to sql
+        save_to_mysql(headers, rows, host, user, password, database, table)
 
 if __name__ == "__main__":
     main()
